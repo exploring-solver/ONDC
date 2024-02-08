@@ -138,14 +138,9 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-		'ENGINE': 'django.db.backends.mysql',
-		'NAME': 'ondc',
-		'USER': 'ondc',
-		'PASSWORD': 'ondc',
-		'HOST':'panel.mait.ac.in',
-		'PORT':'3306',
-        'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"},
-	}
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 # Telling Django to use our User model for authentication 
