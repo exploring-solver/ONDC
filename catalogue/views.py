@@ -42,33 +42,38 @@ class CreateCatalogue(APIView):
     
     def post(self, request): 
         
-        final_data = {
-            'product_name' : request.data.get('product_name'),
-            'mrp' : request.data.get('mrp'),
-            'seller' : request.user.pk,
-            'selling_prize' : request.data.get('selling_prize'),
-            'buying_prize' : request.data.get('buying_prize'),
-            'hsn_code' : request.data.get('hsn_code'),
-            'gst_percentage' : request.data.get('gst_percentage'),
-            'unit' : request.data.get('unit'),
-            'quantity' : request.data.get('quantity'),
-            'standardized' : request.data.get('standardized'),
-            'category' : Categories.objects.get_or_create(category=request.data.get('category'))[0].pk,
-            'mapped_to_master' : request.data.get('mapped_to_master'),
-            'product_image_1' : request.FILES('product_image_1'),
-            'product_image_2' : request.FILES('product_image_2'),
-            'product_image_3' : request.FILES('product_image_3'),
-            'product_image_4' : request.FILES('product_image_4'),
-            'product_image_5' : request.FILES('product_image_5'),
-        }
+        try:
+        
+            final_data = {
+                'product_name' : request.data.get('product_name'),
+                'mrp' : request.data.get('mrp'),
+                'seller' : request.user.pk,
+                'selling_prize' : request.data.get('selling_prize'),
+                'buying_prize' : request.data.get('buying_prize'),
+                'hsn_code' : request.data.get('hsn_code'),
+                'gst_percentage' : request.data.get('gst_percentage'),
+                'unit' : request.data.get('unit'),
+                'quantity' : request.data.get('quantity'),
+                'standardized' : request.data.get('standardized'),
+                'category' : Categories.objects.get_or_create(category=request.data.get('category'))[0].pk,
+                'mapped_to_master' : request.data.get('mapped_to_master'),
+                'product_image_1' : request.FILES('product_image_1'),
+                'product_image_2' : request.FILES('product_image_2'),
+                'product_image_3' : request.FILES('product_image_3'),
+                'product_image_4' : request.FILES('product_image_4'),
+                'product_image_5' : request.FILES('product_image_5'),
+            }
 
-        catalogue_serializer = CatalogueSerializer(data=final_data)
+            catalogue_serializer = CatalogueSerializer(data=final_data)
 
-        if catalogue_serializer.is_valid():
-            catalogue_serializer.save()
-            return Response({'message': 'Catalogue Saved Successfully'}, status=status.HTTP_201_CREATED)
-        else:
-            return Response(catalogue_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            if catalogue_serializer.is_valid():
+                catalogue_serializer.save()
+                return Response({'message': 'Catalogue Saved Successfully'}, status=status.HTTP_201_CREATED)
+            else:
+                return Response(catalogue_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
         
 # to get all catalogues even without logging in    
 class GetAllCatalogues(APIView):
