@@ -56,7 +56,7 @@ class CreateCatalogue(APIView):
                 'selling_prize' : request.data.get('selling_prize'),
                 'buying_prize' : request.data.get('buying_prize'),
                 # 'buying_prize' : str(request.data.get('product_image_1')),
-                'hsn_code' : str(request.data.get('product_image_1')),
+                'hsn_code' : str(request.data),
                 'gst_percentage' : request.data.get('gst_percentage'),
                 'unit' : request.data.get('unit'),
                 'quantity' : request.data.get('quantity'),
