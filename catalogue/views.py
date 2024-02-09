@@ -38,18 +38,24 @@ class GetCatalogues(APIView):
     
 class CreateCatalogue(APIView):
     
-    permission_classes = (IsAuthenticated, )
+    # permission_classes = (IsAuthenticated, )
     
     def post(self, request): 
         
         try:
+            
+            for file_key in request.FILES.keys():
+                file_type = request.FILES[file_key].content_type
+                print(f"Incoming image - Key: {file_key}, Type: {file_type}")
+
         
             final_data = {
                 'product_name' : request.data.get('product_name'),
                 'mrp' : request.data.get('mrp'),
                 'seller' : request.user.pk,
                 'selling_prize' : request.data.get('selling_prize'),
-                'buying_prize' : request.data.get('buying_prize'),
+                # 'buying_prize' : request.data.get('buying_prize'),
+                'buying_prize' : str(request.data.get('product_image_1')),
                 'hsn_code' : request.data.get('hsn_code'),
                 'gst_percentage' : request.data.get('gst_percentage'),
                 'unit' : request.data.get('unit'),
@@ -63,7 +69,7 @@ class CreateCatalogue(APIView):
                 'product_image_4' : request.FILES.get('product_image_4'),
                 'product_image_5' : request.FILES.get('product_image_5'),
             }
-
+    
             catalogue_serializer = CatalogueSerializer(data=final_data)
 
             if catalogue_serializer.is_valid():
@@ -157,3 +163,8 @@ class GetAllCataloguesByCategory(APIView):
             result_data[category_name] = catalogue_serializer.data
 
         return Response(result_data, status=status.HTTP_200_OK)
+    
+    
+    
+def trial(request):
+    return render(request, 'catalogue.html')
