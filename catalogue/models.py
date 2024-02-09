@@ -26,7 +26,7 @@ class Catalogue(models.Model):
     mrp = models.DecimalField(max_digits=10, decimal_places=2)
     selling_prize = models.DecimalField(max_digits=10, decimal_places=2)
     buying_prize = models.DecimalField(max_digits=10, decimal_places=2)
-    hsn_code = models.CharField(max_length=25)
+    hsn_code = models.TextField()
     gst_percentage = models.CharField(max_length=10)
     unit = models.CharField(max_length=10)
     quantity = models.CharField(max_length=10)
