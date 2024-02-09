@@ -97,3 +97,29 @@ class GetAllCatalogues(APIView):
 def get_all_categories(request):
     categories = Categories.objects.all().values_list('category', flat=True)
     return JsonResponse({'categories': list(categories)})
+
+
+class GetCataloguesByCategory(APIView):
+    
+    def get(self, request, category):
+        
+        all_catalogues = Catalogue.objects.filter(category=category)
+        data = []
+
+        for catalogue in all_catalogues:
+            if catalogue.mapped_to_master:
+                category = catalogue.category
+                corresponding_master_catalogue = MasterCatalogue.objects.filter(category=category).first()
+
+                if corresponding_master_catalogue:
+                    # Use master catalogue images
+                    catalogue.product_image_1 = corresponding_master_catalogue.product_image_1
+                    catalogue.product_image_2 = corresponding_master_catalogue.product_image_2
+                    catalogue.product_image_3 = corresponding_master_catalogue.product_image_3
+                    catalogue.product_image_4 = corresponding_master_catalogue.product_image_4
+                    catalogue.product_image_5 = corresponding_master_catalogue.product_image_5
+
+            serializer = CatalogueSerializer(catalogue)
+            data.append(serializer.data)
+
+        return Response(data, status=status.HTTP_200_OK)

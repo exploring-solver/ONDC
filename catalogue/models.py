@@ -54,7 +54,8 @@ class Catalogue(models.Model):
 class MasterCatalogue(models.Model):
     
     category = models.ForeignKey(Categories, on_delete=models.SET_NULL, null=True, db_column='category') 
-    # category = models.CharField(max_length=25)
+ 
+    product_description = models.CharField(max_length=100)
     
     product_image_1 = models.ImageField(blank=True, null=True, upload_to='master-images/')
     product_image_2 = models.ImageField(blank=True, null=True, upload_to='master-images/')
