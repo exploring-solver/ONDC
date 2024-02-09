@@ -39,7 +39,7 @@ class Catalogue(models.Model):
     
     standardized = models.BooleanField()        # standard or non standard
     
-    category = models.OneToOneField(Categories, on_delete=models.SET_NULL, null=True, db_column='category')   #example - laptop
+    category = models.ForeignKey(Categories, on_delete=models.SET_NULL, null=True, db_column='category')   #example - laptop
     # category = models.CharField(max_length=25)
     
     mapped_to_master = models.BooleanField()   # if true, then mapped on basis of category
@@ -53,7 +53,7 @@ class Catalogue(models.Model):
         
 class MasterCatalogue(models.Model):
     
-    category = models.OneToOneField(Categories, on_delete=models.SET_NULL, null=True, db_column='category') 
+    category = models.ForeignKey(Categories, on_delete=models.SET_NULL, null=True, db_column='category') 
     # category = models.CharField(max_length=25)
     
     product_image_1 = models.ImageField(blank=True, null=True, upload_to='master-images/')
