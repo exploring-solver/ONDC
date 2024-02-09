@@ -57,11 +57,11 @@ class CreateCatalogue(APIView):
                 'standardized' : request.data.get('standardized'),
                 'category' : Categories.objects.get_or_create(category=request.data.get('category'))[0].pk,
                 'mapped_to_master' : request.data.get('mapped_to_master'),
-                'product_image_1' : request.FILES('product_image_1'),
-                'product_image_2' : request.FILES('product_image_2'),
-                'product_image_3' : request.FILES('product_image_3'),
-                'product_image_4' : request.FILES('product_image_4'),
-                'product_image_5' : request.FILES('product_image_5'),
+                'product_image_1' : request.data.get('product_image_1'),
+                'product_image_2' : request.data.get('product_image_2'),
+                'product_image_3' : request.data.get('product_image_3'),
+                'product_image_4' : request.data.get('product_image_4'),
+                'product_image_5' : request.data.get('product_image_5'),
             }
 
             catalogue_serializer = CatalogueSerializer(data=final_data)
