@@ -38,49 +38,42 @@ class GetCatalogues(APIView):
     
 class CreateCatalogue(APIView):
     
-    # permission_classes = (IsAuthenticated, )
-    
     def post(self, request): 
-        
         try:
-            
-            for file_key in request.FILES.keys():
-                file_type = request.FILES[file_key].content_type
-                print(f"Incoming image - Key: {file_key}, Type: {file_type}")
+            # Extract image files from request.FILES
+            image_files = [request.FILES.get(f'product_image_{i+1}') for i in range(5)]
 
-        
-            final_data = {
-                'product_name' : request.data.get('product_name'),
-                'mrp' : request.data.get('mrp'),
-                'seller' : request.user.pk,
-                'selling_prize' : request.data.get('selling_prize'),
-                'buying_prize' : request.data.get('buying_prize'),
-                # 'buying_prize' : str(request.data.get('product_image_1')),
-                'hsn_code' : str(request.data),
-                'gst_percentage' : request.data.get('gst_percentage'),
-                'unit' : request.data.get('unit'),
-                'quantity' : request.data.get('quantity'),
-                'standardized' : request.data.get('standardized'),
-                'category' : Categories.objects.get_or_create(category=request.data.get('category'))[0].pk,
-                'mapped_to_master' : request.data.get('mapped_to_master'),
-                'product_image_1' : request.FILES.get('product_image_1'),
-                'product_image_2' : request.FILES.get('product_image_2'),
-                'product_image_3' : request.FILES.get('product_image_3'),
-                'product_image_4' : request.FILES.get('product_image_4'),
-                'product_image_5' : request.FILES.get('product_image_5'),
-            }
-    
-            catalogue_serializer = CatalogueSerializer(data=final_data)
+            # Create a Categories instance or get an existing one
+            category_instance, _ = Categories.objects.get_or_create(category=request.data.get('category'))
 
-            if catalogue_serializer.is_valid():
-                catalogue_serializer.save()
-                return Response({'message': 'Catalogue Saved Successfully'}, status=status.HTTP_201_CREATED)
-            else:
-                return Response(catalogue_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            # Create a Catalogue instance with image files
+            catalogue_instance = Catalogue.objects.create(
+                product_name=request.data.get('product_name'),
+                mrp=request.data.get('mrp'),
+                seller=request.user,
+                selling_prize=request.data.get('selling_prize'),
+                buying_prize=request.data.get('buying_prize'),
+                hsn_code=request.data.get('hsn_code'),
+                gst_percentage=request.data.get('gst_percentage'),
+                unit=request.data.get('unit'),
+                quantity=request.data.get('quantity'),
+                standardized=request.data.get('standardized'),
+                category=category_instance,
+                mapped_to_master=request.data.get('mapped_to_master'),
+                product_image_1=image_files[0],
+                product_image_2=image_files[1],
+                product_image_3=image_files[2],
+                product_image_4=image_files[3],
+                product_image_5=image_files[4],
+            )
+
+            return Response({'message': 'Catalogue Saved Successfully'}, status=status.HTTP_201_CREATED)
             
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
         
+        
+                
 # to get all catalogues even without logging in    
 class GetAllCatalogues(APIView):
     def get(self, request):
