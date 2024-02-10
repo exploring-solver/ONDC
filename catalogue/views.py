@@ -162,3 +162,16 @@ class GetAllCataloguesByCategory(APIView):
     
 def trial(request):
     return render(request, 'catalogue.html')
+
+
+
+class GetCatalogueById(APIView):
+    
+    def get(self, request, id):
+        try:
+            catalogue = Catalogue.objects.get(id=id)
+        except Catalogue.DoesNotExist:
+            return Response({'error': 'Catalogue not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = CatalogueSerializer(catalogue)
+        return Response(serializer.data, status=status.HTTP_200_OK)

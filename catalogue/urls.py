@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     path('get/', views.GetCatalogues.as_view(), name='get_catalouges'),
+    path('get-by-id/<int:id>/', views.GetCatalogueById.as_view(), name='get_catalouge_by_id'),
     path('get-by-category/<str:category>/', views.GetCataloguesByCategory.as_view(), name='get_catalouges_by_category'),
     path('get-all-by-category/', views.GetAllCataloguesByCategory.as_view(), name='get_all_catalouges_by_category'),
     path('create/', views.CreateCatalogue.as_view(), name='create_catalouge'),
