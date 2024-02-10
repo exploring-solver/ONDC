@@ -69,6 +69,7 @@ class CustomUserAdmin(UserAdmin):
     add_form = UserCreationForm
 
     list_display = ['email', 'name', 'role']
+    list_filter = ['role']
     ordering = ['email']
 
     fieldsets = (

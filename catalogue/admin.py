@@ -4,6 +4,8 @@ from . models import Catalogue, MasterCatalogue, Categories
 
 class CatalogueAdmin(admin.ModelAdmin):
     list_display = ['seller', 'product_name', 'category', 'mrp', 'unit', 'quantity']
+    list_filter = ['category']
+    search_fields = ['product_name']
     
 class MasterCatalogueAdmin(admin.ModelAdmin):
     list_display = ['category']
