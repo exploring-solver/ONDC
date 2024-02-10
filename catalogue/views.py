@@ -170,7 +170,7 @@ class GetCatalogueById(APIView):
     def get(self, request, id):
         try:
             catalogue = Catalogue.objects.get(id=id)
-            data = []
+            # data = []
             if catalogue.mapped_to_master:
                 category = catalogue.category
                 corresponding_master_catalogue = MasterCatalogue.objects.filter(category=category).first()
@@ -184,9 +184,9 @@ class GetCatalogueById(APIView):
                     catalogue.product_image_5 = corresponding_master_catalogue.product_image_5
 
             serializer = CatalogueSerializer(catalogue)
-            data.append(serializer.data)
+            # data.append(serializer.data)
 
-            return Response(data, status=status.HTTP_200_OK)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         except Catalogue.DoesNotExist:
             return Response({'error': 'Catalogue not found'}, status=status.HTTP_404_NOT_FOUND)
 
